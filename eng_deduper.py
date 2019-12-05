@@ -12,7 +12,7 @@ def get_args():
     parser.add_argument("-u", "--umi", help="optional arg, designates file containing the list of UMIs (unset if randomers instead of UMIs)", type=str)
 #    parser.add_argument("-o", "--out_file", help="Desired outfile path + name", type=str)
     parser.add_argument("-p", "--paired", help="optional arg, designates file is paired end (not single-end) / Input options: paired, single", type=str)
-    parser.add_argument("-t", "--sort_val", help="Is the sam file sorted? (1 = yes 0 = No) *Make sure samtools module is loaded if sam file is not sorted*", type=int)
+    parser.add_argument("-t", "--sort_val", help="Is the sam file sorted? (1 = yes | 0 = No) *Make sure samtools module is loaded if sam file is not sorted*", type=int)
 #    parser.add_argument('-h', '--help', action='help', default=argparse.SUPPRESS, help='Show this help message and exit.')
     return parser.parse_args()
 
