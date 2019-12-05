@@ -64,7 +64,7 @@ def get_tuple(record):
 
         # Get the corrected 5' starting position
         cigar = record[5]
-        cig_split = re.findall(r'\d+[MIDNSHP=X]', cigar)
+        cig_split = re.findall(r'\d+[MIDNSHP]', cigar)
 
         # Adjust for soft clipping on left side if direction is forward (1)
         if Dir == 0:
