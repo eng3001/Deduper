@@ -7,21 +7,31 @@ import os
 
 #Set input variables
 def get_args():
-    parser = argparse.ArgumentParser(description="Identify reads that map to \
-the same chromosome and position of a genome and remove duplicated contigs")
-    parser.add_argument("-s", "--sam_file", help="Sorted sam file path", type=str)
-    parser.add_argument("-u", "--UMI_file", help="Known UMI file path", type=str)
-    parser.add_argument("-o", "--out_file", help="Desired outfile path + name", type=str)
-    parser.add_argument("-t", "--sort_val", help="Is the sam file sorted? (1 = yes 0 = No) \
-    *Make sure samtools module is loaded*", type=int)
+    parser = argparse.ArgumentParser(description="Identify reads that map to the same chromosome and position of a genome and remove duplicated contigs")
+    parser.add_argument("-f", "--file", help="required arg, absolute file path", type=str)
+    parser.add_argument("-u", "--umi", help="optional arg, designates file containing the list of UMIs (unset if randomers instead of UMIs)", type=str)
+#    parser.add_argument("-o", "--out_file", help="Desired outfile path + name", type=str)
+    parser.add_argument("-p", "--paired", help="optional arg, designates file is paired end (not single-end) / Input options: paired, single", type=str)
+    parser.add_argument("-t", "--sort_val", help="Is the sam file sorted? (1 = yes 0 = No) *Make sure samtools module is loaded if sam file is not sorted*", type=int)
+#    parser.add_argument('-h', '--help', action='help', default=argparse.SUPPRESS, help='Show this help message and exit.')
     return parser.parse_args()
 
 args = get_args()
 # Setting user inputted variables
-Sam_file = args.sam_file
-index_file = args.UMI_file
-out_file = args.out_file
+Sam_file = args.file
+index_file = args.umi
 Sorted_Val = args.sort_val
+Paired = args.paired
+#out_file = args.out_file
+
+# Format outfile name
+file_name = Sam_file.split(".sam")[0]
+out_file = file_name + "_deduped.sam"
+
+# Check if paired functionality is requested
+if Paired == "paired" or Paired == "Paired":
+    print("No paired-end functionality, sorry!")
+    exit()
 
 # Sort inputted sam file if desired
 if Sorted_Val == 0:
@@ -64,7 +74,7 @@ def get_tuple(record):
 
         # Get the corrected 5' starting position
         cigar = record[5]
-        cig_split = re.findall(r'\d+[MIDNSHP]', cigar)
+        cig_split = re.findall(r'\d+[MIDNSHP=X]', cigar)
 
         # Adjust for soft clipping on left side if direction is forward (1)
         if Dir == 0:
