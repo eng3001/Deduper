@@ -114,7 +114,6 @@ write_file = open(out_file, "a")
 
 with open("sorted.sam") as body:
     for line in body:
-        line = line
         split_line = line.split()
 
         # Write headerlines to out output file
